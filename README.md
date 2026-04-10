@@ -1,4 +1,4 @@
-⚡ PowerTechs · Workforce Skills Intelligence Tool
+PowerTechs · Workforce Skills Intelligence Tool
 A data-driven skills intelligence tool for California's Construction, Energy, Transportation, and Agriculture (ACET) workforce. Built as part of the UC Davis MSBA Practicum in partnership with PowerTechs, a Techstars-backed startup building an AI-driven reskilling platform.
 
 -Live Tool
