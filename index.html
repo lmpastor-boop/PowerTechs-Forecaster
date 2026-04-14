@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PowerTechs · Workforce Forecaster</title>
+<title>PowerTechs · California Workforce Skills Intelligence Tool</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -347,8 +347,8 @@
   <div class="logo">
     <span class="bolt">⚡</span>
     <div>
-      <h1>PowerTechs · Workforce Forecaster</h1>
-      <p>Built on ARIMA + AI Exposure Pipeline · UC Davis MSBA Practicum · Larry Pastor · 2025</p>
+      <h1>PowerTechs · California Workforce Forecaster</h1>
+      <p>California Workforce Intelligence · Built on CA EDD + O*NET Data · UC Davis MSBA Practicum · Larry Pastor · 2026</p>
     </div>
   </div>
   <div class="badge">Skills Intelligence Tool</div>
@@ -358,11 +358,11 @@
 
   <!-- Controls -->
   <div class="controls-card">
-    <h2>Company Profile</h2>
+    <h2>California Company Profile</h2>
     <div class="controls-grid">
       <div class="control-group">
         <label>Sector</label>
-        <select id="sector" onchange="updateRoles()">
+        <select id="sector" onchange="updateRoles()" onfocus="updateRoles()">
           <option>Construction</option>
           <option>Energy</option>
           <option>Transportation</option>
@@ -404,10 +404,11 @@
     <div class="kpi-grid" id="kpi-grid"></div>
 
     <div class="warning-box">
-      ⚠️ <strong>Sector-level trends only:</strong> This tool surfaces skills intelligence based on
-      California industry data — it does not forecast company-specific headcount. Company growth
-      is driven by many factors (contracts, funding, strategy, geography) that sector trends alone
-      cannot capture. Use these signals to inform hiring priorities and reskilling investments.
+      ⚠️ <strong>California sector-level trends only:</strong> This tool surfaces skills intelligence based on
+      California state industry data from the CA EDD and O*NET — it does not forecast company-specific
+      headcount, and projections do not reflect national or global trends. Company growth is driven by
+      many factors (contracts, funding, strategy, geography) that sector trends alone cannot capture.
+      Use these signals to inform hiring priorities and reskilling investments within California.
     </div>
 
     <div class="reco-card" id="reco-card"></div>
@@ -431,8 +432,8 @@
 <footer>
   Model: ARIMA(1,1,1) on CA EDD monthly employment data (1990–2025) ·
   AI exposure: O*NET macro skill weights × occupation skill shares (α=0.10) ·
-  IO Matrix: CA 2023–2033 occupation projections · Shift-share decomposition (Scale + Mix effects)<br>
-  PowerTechs Practicum · UC Davis MSBA · Larry Pastor & Amal Farhad Shaji · 2025
+  IO Matrix: CA 2023–2033 occupation projections · Shift-share decomposition (Scale + Mix effects) · California-scoped analysis<br>
+  PowerTechs Practicum · UC Davis MSBA · Larry Pastor & Amal Farhad Shaji · 2026
 </footer>
 
 <script>
@@ -502,9 +503,15 @@ let skillChart, sectorChart;
 function updateRoles() {
   const sector = document.getElementById("sector").value;
   const roleEl = document.getElementById("role");
-  roleEl.innerHTML = ROLES[sector].map(r => `<option>${r}</option>`).join("");
+  if (!sector) return;
+  roleEl.innerHTML = ROLES[sector].map(r => `<option value="${r}">${r}</option>`).join("");
 }
-updateRoles();
+
+// Fire on page load and on sector change
+window.addEventListener("load", function() {
+  updateRoles();
+  document.getElementById("sector").addEventListener("change", updateRoles);
+});
 
 // ── Main forecast function ──
 function generateForecast() {
